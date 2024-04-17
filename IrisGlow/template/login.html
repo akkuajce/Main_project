@@ -1,0 +1,160 @@
+{% load static %}
+{% load socialaccount %}
+
+{% comment %} {% block content %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Login</title>
+    <style>
+        body{
+            font-family: 'Poppins', sans-serif;
+            background-image: url('{% static 'img/.jpg' %}'); /* Replace with the path to your background image */
+            background-size: cover;
+            background-position: center;
+        }
+        .alert-top {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px; /* Adjust this width as needed */
+            z-index: 1000; /* Ensure the alert is on top of other content */
+        }
+</style>
+</head>
+
+<body>
+
+    <!----------------------- Main Container -------------------------->
+
+     <div class="container d-flex justify-content-center align-items-center min-vh-100">
+
+    <!----------------------- Login Container -------------------------->
+
+       <div class="row border rounded-5 p-3 bg-white shadow box-area">
+
+    <!--------------------------- Left Box ----------------------------->
+
+       <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #103cbe;">
+           <div class="featured-image mb-3">
+            {% comment %} <img src="{% static 'img/.jpg' %}" class="img-fluid" style="width: 250px;"> {% endcomment %}
+           </div>
+           <img src="{% static 'img/logo1.png' %}" class="img-fluid" style="width: 250px;">
+           <p class="text-white fs-2" style="font-family: 'Open Sans', normal; font-weight: 600;">IrisGlow</p>
+           <small class="text-white text-wrap text-center" style="width: 17rem;font-family: 'Open Sans', normal;"><b>Caring for your eyes start here</b></small>
+       </div> 
+
+    <!-------------------- ------ Right Box ---------------------------->
+        
+       <div class="col-md-6 right-box">
+          <div class="row align-items-center">
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="header-text mb-4">
+                     <h2>Hello, Again</h2>
+                     <p>We are happy to care your eyes.</p>
+                </div>
+                <div class="input-group mb-3">
+                    {% comment %} <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="email" name="email" required> {% endcomment %}
+                    <input type="email" class="form-control form-control-lg bg-light fs-6" placeholder="email" name="email" id= "email" required autocomplete="off">
+
+
+                    
+
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" name="password" id="password" required>
+                </div>
+                
+                 <div class="input-group mb-5 d-flex justify-content-between">
+                    
+                </div>
+                
+                {% comment %} <script>
+                    // Clear form fields on page load
+                    window.addEventListener('load', function() {
+                        document.getElementById('login').reset();
+                    });
+                </script> {% endcomment %}
+
+
+
+                <div class="input-group mb-3">
+                    <button class="btn btn-lg btn-primary w-100 fs-6" type="submit" id="submit">Login</button>
+                </div>
+
+{% comment %} google login {% endcomment %}
+                <div>
+
+                <button class="btn btn-outline-info">
+                    <a href="{% provider_login_url 'google'%}?next=/">
+                        <i class="fab fa-google"></i>
+                        Login with Google
+                    </a>
+                </button>
+            </div>
+            <br>
+
+            
+                
+                <div class="row">
+                    <small><b>Don't have account?</b> <button><a href="{% url "register" %}">Signup </a></button></small>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="row">
+                        <small><b>Forgot Password?  <button><a href="{% url "password_reset" %}">Click Here</a> </button></small>
+                    </div>
+                </div>
+            </form>
+            
+          </div>
+       </div> 
+
+      </div>
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer>
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const alertType = urlParams.get('alert');
+
+            if (alertType === 'invalid_captcha') {
+                showAlert('Invalid login Captcha', 'danger');
+            } else if (alertType === 'invalid_credentials') {
+                showAlert('Invalid login credentials.', 'danger');
+            } else if (alertType === 'fill_fields') {
+                showAlert('Please fill out all fields.', 'warning');
+            }
+
+            function showAlert(message, alertType) {
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert', `alert-${alertType}`, 'alert-top');
+                alertDiv.textContent = message;
+
+                const container = document.querySelector('.container');
+                container.insertBefore(alertDiv, container.firstChild);
+
+                setTimeout(function() {
+                    alertDiv.remove();
+                }, 5000);  // Remove after 5 seconds
+            }
+        });
+    </script>
+
+</body>
+</html>
+{% comment %} {% endblock content %} {% endcomment %}
